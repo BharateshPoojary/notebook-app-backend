@@ -1,11 +1,13 @@
 import express from 'express';
+import User from '../models/User.js';
 const router = express.Router();
-router.get('/', (req, res) => {
-    res.json({
-        name: 'bharat',
-        rno: 21515,
-        desc: 'hello from auth'
-    });
+router.post('/', (req, res) => {
+    const user = User(req.body);
+    user.save();
+    console.log(req.body);
+    res.send("saved successfully");
+
+
 }
 )
 export default router;

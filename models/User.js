@@ -1,5 +1,6 @@
 
 //we are creating basic authentication schema here 
+import { Schema } from "mongoose";
 import mongoose from 'mongoose';
 
 const UserSchema = new Schema({//It is an instance of a class i.e. a constructor function 
