@@ -1,13 +1,20 @@
 import express from 'express';
 import User from '../models/User.js';
+import { body, validationResult } from 'express-validator';
 const router = express.Router();
-router.post('/', (req, res) => {
-    const user = User(req.body);
-    user.save();
-    console.log(req.body);
-    res.send("saved successfully");
-
-
-}
-)
+router.post('/', [body('name', 'Name must be at least 3 characters').isLength({ min: 3 }), body('email', 'Enter a valid email').isEmail(), body('password', 'passwor must be at least 5 characters').isLength({ min: 5 })], async (req, res) => {
+    const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
+    if (!errors.isEmpty()) {//here we are checking whether there is any error or not if errors are not empty then sending response status code 400 and errors in array
+        return res.status(400).json({ errors: errors.array() });
+    }
+    //We are creating object of user model (no requirement of new keyword automatically it will  create an instance ) and we are populating the data of request body 
+    try {
+        const user = User(req.body);//Each time it will get one document from request body and it will match with the schema provided .User(req.body) returns an instance of the User model populated with the data from the request body.
+        await user.save();//next it will save in database here why await is there because it will return a promise it ensures that the code waits for the promise to be resolved before moving on.user.save() is an asynchronous operation that interacts with the database. By using await, you ensure that the database operation completes before proceeding to the next line of code.
+        console.log(req.body);
+        res.json(user);
+    } catch (error) {
+        res.json({ error: "Please enter a valid email" });
+    }
+})
 export default router;
