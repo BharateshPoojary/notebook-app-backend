@@ -2,6 +2,8 @@ import express from 'express';
 import User from '../models/User.js';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+const JWT_SECRET_KEY = "inotebook@bharat#123";
 const router = express.Router();
 router.post('/createuser', [body('name', 'Name must be at least 3 characters').isLength({ min: 3 }), body('email', 'Enter a valid email').isEmail(), body('password', 'passwor must be at least 5 characters').isLength({ min: 5 })], async (req, res) => {
     const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
@@ -36,9 +38,11 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
             name: req.body.name,
             password: secure_password,
             email: req.body.email
-        })
-        res.json(creatingnewuser);
-        console.log(creatingnewuser);
+        });
+        const data = { user_id: creatingnewuser.id };//here I am giving id as it uniquely defines each document
+        const authtoken = jwt.sign(data, JWT_SECRET_KEY);//sign function is used to generate JWT token no one can tamper or can't make any changes as it includes secret key
+        res.json({ authtoken });//ES6 syntax ,  only providing value i.e (variable name ) inside {} curly braces , In output key  will be the (variable name)i.e "authtoken" here and value will be JWTtoken 
+        console.log(authtoken);
 
     } catch (error) {
         //If some diiferent error arise it will be handled here
