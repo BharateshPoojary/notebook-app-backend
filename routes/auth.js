@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/User.js';
 import { body, validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
 const router = express.Router();
 router.post('/createuser', [body('name', 'Name must be at least 3 characters').isLength({ min: 3 }), body('email', 'Enter a valid email').isEmail(), body('password', 'passwor must be at least 5 characters').isLength({ min: 5 })], async (req, res) => {
     const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
@@ -28,10 +29,12 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
         return res.status(400).json({ error: "Sorry a user with this email already exists" });
     }
     //create method creates and saves the document
+    const salt = await bcrypt.genSalt(10);//genSalt function will generate a salt 
+    const secure_password = await bcrypt.hash(req.body.password, salt);//hash function will generate a hash for current password and it will append salt to that hashed password
     try {
         let creatingnewuser = await User.create({//here await is required as processing from db takes time
             name: req.body.name,
-            password: req.body.password,
+            password: secure_password,
             email: req.body.email
         })
         res.json(creatingnewuser);
