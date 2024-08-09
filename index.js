@@ -7,7 +7,7 @@ import notes from './routes/notes.js';
     await connectToMongo();
 })();
 const app = express();
-const port = "3000";
+const port = "5000";
 app.use(express.json());
 app.use('/api/auth', auth);
 app.use('/api/notes', notes);
