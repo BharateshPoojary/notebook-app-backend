@@ -5,9 +5,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 const JWT_SECRET_KEY = "inotebook@bharat#123";
 const router = express.Router();
+//ROUTE1:Endpoint for  creating  a new user i.e. SignUp endpoint
 router.post('/createuser', [body('name', 'Name must be at least 3 characters').isLength({ min: 3 }), body('email', 'Enter a valid email').isEmail(), body('password', 'passwor must be at least 5 characters').isLength({ min: 5 })], async (req, res) => {
     const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
-    if (!errors.isEmpty()) {//here we are checking whether there is any error or not if errors are not empty then sending response status code 400 and errors in array
+    if (!errors.isEmpty()) {//here we are checking whether there is any error or not, if errors are not empty then sending response status code 400 and errors in array
         return res.status(400).json({ errors: errors.array() });
     }
     //METHOD 1:
@@ -47,7 +48,39 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
     } catch (error) {
         //If some diiferent error arise it will be handled here
         console.log(error.message);
-        res.status(500).json({ error: "some error occured" });
+        res.status(500).json({ error: "Internal server error occured" });
     }
 })
+//ROUTE2:Authenticating a user when tries to login it is signin/login endpoint
+router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('password', "Password cannot be blank").isLength({ min: 1 })], async (req, res) => {
+    const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
+    if (!errors.isEmpty()) {//here we are checking whether there is any error or not, if errors are not empty then sending response status code 400 and errors in array
+        return res.status(400).json({ errors: errors.array() });
+    }
+    //METHOD1
+    const loginusercreds = {
+        email: req.body.email,
+        password: req.body.password,
+    }
+    //METHOD2:Destructuring
+    // const { email, password } = req.body;
+    const verify_user = await User.findOne({ email: loginusercreds.email });
+    if (!verify_user) {
+        return res.status(400).json({ error: "Please try to login with correct credentials" });
+    }
+    try {
+        //compare function compare the password sent by user with the password present in database which is in hash
+        const password_compare = await bcrypt.compare(loginusercreds.password, verify_user.password);
+        if (!password_compare) {
+            return res.status(400).json({ error: "Please try to login with correct credentials" });
+        }
+        const auth_token = jwt.sign({ user_id: verify_user.id }, JWT_SECRET_KEY);
+        res.json({ auth_token });
+        console.log(auth_token);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Internal server error occured" });
+    }
+})
+
 export default router;
