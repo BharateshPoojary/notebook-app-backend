@@ -2,9 +2,11 @@ import express from 'express';
 import User from '../models/User.js';
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
+import fetchuser from '../middleware/fetchuser.js';
 import jwt from 'jsonwebtoken';
 const JWT_SECRET_KEY = "inotebook@bharat#123";
 const router = express.Router();
+
 //ROUTE1:Endpoint for  creating  a new user i.e. SignUp endpoint
 router.post('/createuser', [body('name', 'Name must be at least 3 characters').isLength({ min: 3 }), body('email', 'Enter a valid email').isEmail(), body('password', 'passwor must be at least 5 characters').isLength({ min: 5 })], async (req, res) => {
     const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
@@ -51,6 +53,7 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
         res.status(500).json({ error: "Internal server error occured" });
     }
 })
+
 //ROUTE2:Authenticating a user when tries to login it is signin/login endpoint
 router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('password', "Password cannot be blank").isLength({ min: 1 })], async (req, res) => {
     const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
@@ -83,4 +86,17 @@ router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('pas
     }
 })
 
+//ROUTE3:Accessing user credentials after login
+router.post('/getuser', fetchuser, async (req, res) => {
+    try {
+        const userid = req.userid;//accessing userid from request object 
+        const usercreds = await User.findById(userid).select("-password");//accessing the user credentials of logged in user using its id and not considering the password thatswhy (-password)
+        res.send(usercreds);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Internal server error occured" });
+    }
+})
+
 export default router;
+//here I have used the middleware function the reason is that if I not used that everytime If I create different endpoint in future and if I need the user creds  I had to repeat the process of verifying the JWT token and accessing the userid so in order to overcome that I have created a seperate file called fetchuser.js// which includes a middleware function which will be invoked for getuser endpoint and this middleware function I can use for different endpoint as well in future to verify JWT Token and accessing id from it to get user credentials
