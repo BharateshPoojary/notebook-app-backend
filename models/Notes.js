@@ -7,7 +7,7 @@ const NotesSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
+    },//It is like a foreign key of mongoDB
 
     /*type: mongoose.Schema.Types.ObjectId: This specifies that the user field will store an ObjectId, which is a type used by MongoDB to uniquely identify documents.
 ref: 'User': This tells Mongoose that the user field is a reference to a document in the User collection. This creates a relationship between the Notes schema and the User schema, allowing you to populate or query the related user data.
