@@ -67,7 +67,8 @@ router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('pas
     }
     //METHOD2:Destructuring
     // const { email, password } = req.body;
-    const verify_user = await User.findOne({ email: loginusercreds.email });
+    const verify_user = await User.findOne({ email: loginusercreds.email });//findOne() method is used to find a single document in a MongoDB Collection. Model.findOne(query) here in syntax Query is an object specifying the conditions the document must match.
+    //If no document matches it will return null or else it will return the first document that matches the query criteria if there are multiple matches
     if (!verify_user) {
         return res.status(400).json({ error: "Please try to login with correct credentials" });
     }
@@ -77,7 +78,7 @@ router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('pas
         if (!password_compare) {
             return res.status(400).json({ error: "Please try to login with correct credentials" });
         }
-        const auth_token = jwt.sign({ user_id: verify_user.id }, JWT_SECRET_KEY);
+        const auth_token = jwt.sign({ user_id: verify_user.id }, JWT_SECRET_KEY);//sign function for encoding the payload data and it returns the auth token
         res.json({ auth_token });
         console.log(auth_token);
     } catch (error) {
@@ -91,6 +92,8 @@ router.post('/getuser', fetchuser, async (req, res) => {
     try {
         const userid = req.userid;//accessing userid from request object 
         const usercreds = await User.findById(userid).select("-password");//accessing the user credentials of logged in user using its id and not considering the password thatswhy (-password)
+        //Model.findById(id)This method is used to find a single document in a collection by using it unique id here (id) is a unique identifier of the document which we want to retrieve.It can be any unique string.
+        //Model.select(fields) It is used  to specify which fields should be included or excluded in the result of a query.This method is particularly useful when you want to retrieve only certain fields from a document instead of fetching the entire document 
         res.send(usercreds);
     } catch (error) {
         console.log(error.message);
