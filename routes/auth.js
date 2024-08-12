@@ -4,7 +4,10 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import fetchuser from '../middleware/fetchuser.js';
 import jwt from 'jsonwebtoken';
-const JWT_SECRET_KEY = "inotebook@bharat#123";
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });//For security purpose 
+
+const jwt_key = process.env.JWT_SECRET_KEY;
 const router = express.Router();
 
 //ROUTE1:Endpoint for  creating  a new user i.e. SignUp endpoint
@@ -28,7 +31,7 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
             email: req.body.email
         });
         const data = { user_id: creatingnewuser.id };//here I am giving id as it uniquely defines each document
-        const authtoken = jwt.sign(data, JWT_SECRET_KEY);//sign function is used to generate JWT token no one can tamper or can't make any changes as it includes secret key
+        const authtoken = jwt.sign(data, jwt_key);//sign function is used to generate JWT token no one can tamper or can't make any changes as it includes secret key
         res.json({ authtoken });//ES6 syntax ,  only providing value i.e (variable name ) inside {} curly braces , In output key  will be the (variable name)i.e "authtoken" here and value will be JWTtoken 
         console.log(authtoken);
 
@@ -63,7 +66,7 @@ router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('pas
         if (!password_compare) {
             return res.status(400).json({ error: "Please try to login with correct credentials" });
         }
-        const auth_token = jwt.sign({ user_id: verify_user.id }, JWT_SECRET_KEY);//sign function for encoding the payload data and it returns the auth token
+        const auth_token = jwt.sign({ user_id: verify_user.id }, jwt_key);//sign function for encoding the payload data and it returns the auth token
         res.json({ auth_token });
         console.log(auth_token);
     } catch (error) {
