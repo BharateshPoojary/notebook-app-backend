@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
     try {
         const user = req.userid;
-        const notes = await Note.find({ user });//The find() function is used to retrieve documents from a collection that match a specified query
+        const notes = await Note.find({ user });//The find() function is used to retrieve documents from a collection that match a specified query (query means field name of document)
         //Model.find(query) where query specifies the criteria for selecting documents//Its uses a JSON like syntax
         res.json(notes);
     } catch (error) {
@@ -29,7 +29,7 @@ router.post('/addnotes', fetchuser, [body('title', 'title must be atleast 3 char
         const savednote = await notes.save();
         res.json(savednote);
     } catch (error) {
-        //If some diiferent error arise it will be handled here
+        //If some different error arise it will be handled here
         console.log(error.message);
         res.status(500).json({ error: "Internal server error occured" });
     }
