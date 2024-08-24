@@ -24,6 +24,7 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
     //create method creates and saves the document
     const salt = await bcrypt.genSalt(10);//genSalt function will generate a salt 
     const secure_password = await bcrypt.hash(req.body.password, salt);//hash function will generate a hash for current password and it will append salt to that hashed password
+    /*The 10 in bcrypt.genSalt(10) refers to the salt rounds or cost factor. This number controls how many times the hashing algorithm is run on the data. A higher number means the algorithm runs more times, which increases the computation time and makes the hash stronger and more resistant to brute-force attacks*/
     try {
         let creatingnewuser = await User.create({//here await is required as processing from db takes time
             name: req.body.name,
