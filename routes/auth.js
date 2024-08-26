@@ -5,9 +5,10 @@ import bcrypt from 'bcryptjs';
 import fetchuser from '../middleware/fetchuser.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });//For security purpose 
 
+dotenv.config({ path: "C:\\Users\\Admin\\OneDrive\\Desktop\\web development\\MERN APP\\notebook_app_backend\\.env.local" });
 const jwt_key = process.env.JWT_SECRET_KEY;
+let success = false;
 const router = express.Router();
 
 //ROUTE1:Endpoint for  creating  a new user i.e. SignUp endpoint
@@ -33,7 +34,8 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
         });
         const data = { user_id: creatingnewuser.id };//here I am giving id as it uniquely defines each document
         const authtoken = jwt.sign(data, jwt_key);//sign function is used to generate JWT token no one can tamper or can't make any changes as it includes secret key
-        res.json({ authtoken });//ES6 syntax ,  only providing value i.e (variable name ) inside {} curly braces , In output key  will be the (variable name)i.e "authtoken" here and value will be JWTtoken 
+        success = true;
+        res.json({ success, authtoken });//ES6 syntax ,  only providing value i.e (variable name ) inside {} curly braces , In output key  will be the (variable name)i.e "authtoken" here and value will be JWTtoken 
         console.log(authtoken);
 
     } catch (error) {
@@ -45,6 +47,7 @@ router.post('/createuser', [body('name', 'Name must be at least 3 characters').i
 
 //ROUTE2:Authenticating a user when tries to login it is signin/login endpoint
 router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('password', "Password cannot be blank").isLength({ min: 1 })], async (req, res) => {
+    // console.log(jwt_key);
     const errors = validationResult(req);//This will validate or check every request or data sent by client  if there is any error it will return in array 
     if (!errors.isEmpty()) {//here we are checking whether there is any error or not, if errors are not empty then sending response status code 400 and errors in array
         return res.status(400).json({ errors: errors.array() });
@@ -68,9 +71,11 @@ router.post('/login', [body('email', 'Enter a valid email').isEmail(), body('pas
             return res.status(400).json({ error: "Please try to login with correct credentials" });
         }
         const auth_token = jwt.sign({ user_id: verify_user.id }, jwt_key);//sign function for encoding the payload data and it returns the auth token
-        res.json({ auth_token });
-        console.log(auth_token);
+        success = true;
+        res.json({ success, auth_token });
+        // console.log(auth_token);
     } catch (error) {
+
         console.log(error.message);
         res.status(500).json({ error: "Internal server error occured" });
     }
