@@ -13,5 +13,5 @@ const connectToMongo = async () => {
 
     }
 };
-exports.handler = connectToMongo;
+export const handler = connectToMongo;
 //Exporting the function using module.exports

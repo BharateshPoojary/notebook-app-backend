@@ -5,7 +5,12 @@ import notes from '../routes/notes.js';
 import cors from 'cors';
 import serverless from 'serverless-http';
 (async () => {
-    await connectToMongo();
+    try {
+        await connectToMongo();
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Error connecting to MongoDB', error);
+    }
 })();//connecting to mongodb
 
 const app = express();//creating instance of express
@@ -18,9 +23,9 @@ app.use('/api/notes', notes);
 app.get('/', (req, res) => {
     res.send("Hello from Bharat");
 });
-app.listen(port, () => {
-    console.log(`http://localhost:${port}`);
+// app.listen(port, () => {
+//     console.log(`http://localhost:${port}`);
 
-})
+// })
 // Export the serverless function handler
 export const handler = serverless(app);

@@ -33,4 +33,4 @@ const NotesSchema = new Schema({
 });
 
 
-exports.handler = mongoose.model('Notes', NotesSchema);
+export const handler = mongoose.model('Notes', NotesSchema);
