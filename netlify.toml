@@ -1,8 +1,10 @@
 [build]
     command = "echo 'No build step'"
-    functions = "."
+    functions = "functions"  # Directory where your functions are now located
+
 [functions]
-    directory = "." 
+    directory = "functions"  # Points to the functions directory
+
 [[redirects]]
     from = "/*"
     to = "/.netlify/functions/index"
