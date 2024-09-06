@@ -95,5 +95,5 @@ router.post('/getuser', fetchuser, async (req, res) => {
     }
 })
 
-export default router;
+exports.handler = router;
 //here I have used the middleware function the reason is that if I not used that everytime If I create different endpoint in future and if I need the user creds  I had to repeat the process of verifying the JWT token and accessing the userid so in order to overcome that I have created a seperate file called fetchuser.js// which includes a middleware function which will be invoked for getuser endpoint and this middleware function I can use for different endpoint as well in future to verify JWT Token and accessing id from it to get user credentials
