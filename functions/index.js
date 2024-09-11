@@ -22,10 +22,15 @@ app.use('/api/notes', notes);
 
 app.get('/', (req, res) => {
     try {
-        res.setHeader('Content-Type', 'application/json');
-        res.json({ message: "Hello from Bharat" });
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: "Hello from Bharat" }),
+        };
     } catch (error) {
-        res.status(500).json({ error: "Server error" });
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: "Server Error" }),
+        };
     }
 });
 
