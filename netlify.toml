@@ -5,4 +5,7 @@
 [functions]
     directory = "functions"  # Points to the functions directory
 
-
+[[redirects]]
+    from = "/*"
+    to = "/.netlify/functions/index.js"
+    status = 200
