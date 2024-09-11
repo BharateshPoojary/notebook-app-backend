@@ -21,7 +21,7 @@ app.use('/api/auth', auth);//app.use is used to define a middleware function and
 app.use('/api/notes', notes);
 
 app.get('/', (req, res) => {
-    res.send("Hello from Bharat");
+    res.json({ "greeting": "Hello from Bharat" });
 });
 // app.listen(port, () => {
 //     console.log(`http://localhost:${port}`);
