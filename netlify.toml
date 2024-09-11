@@ -6,6 +6,6 @@
     directory = "functions"  # Points to the functions directory
 
 [[redirects]]
-    from = "/api/*"
+    from = "/*"
     to = "/.netlify/functions/index"
     status = 200
