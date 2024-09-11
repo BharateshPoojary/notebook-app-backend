@@ -1,8 +1,8 @@
 [build]
-  command = "echo 'No build step'"
-  functions = "notebook_app_backend/functions"  # Correct path to your functions directory
+    command = "echo 'No build step'"
+    functions = "functions"  # Directory where your functions are now located
 
 [functions]
-  directory = "notebook_app_backend/functions"  # Points to the correct functions directory
+    directory = "functions"  # Points to the functions directory
 
 
