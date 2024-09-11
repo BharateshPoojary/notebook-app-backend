@@ -93,4 +93,4 @@ router.delete('/deletenotes/:id', fetchuser, async (req, res) => {//:id means we
     }
 });
 
-export const handler = router;
+export default router;

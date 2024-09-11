@@ -21,4 +21,4 @@ const fetchuser = (req, res, next) => {
         return res.status(401).json({ error: "Please authenticate using a  valid token" });
     }
 }
-export const handler = fetchuser;
+export default fetchuser;

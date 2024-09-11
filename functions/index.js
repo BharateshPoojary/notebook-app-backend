@@ -28,5 +28,5 @@ app.get('/', (req, res) => {
 
 // })
 // Export the serverless function handler
-export const handler = serverless(app);//This is for netlify serverless function
-//export default app
+export default serverless(app);//This is for netlify serverless function
+// export default app

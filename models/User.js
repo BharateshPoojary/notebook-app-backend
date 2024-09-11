@@ -25,4 +25,4 @@ const UserSchema = new Schema({//It is an instance of a class i.e. a constructor
 });
 
 // export default mongoose.model('User', UserSchema);//It is a function it will return an object which refers to this model using which we can create documents.
-export const handler = mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema);
