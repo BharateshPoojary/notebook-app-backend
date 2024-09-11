@@ -1,11 +1,8 @@
 [build]
-    command = "echo 'No build step'"
-    functions = "functions"  # Directory where your functions are now located
+  command = "echo 'No build step'"
+  functions = "notebook_app_backend/functions"  # Correct path to your functions directory
 
 [functions]
-    directory = "functions"  # Points to the functions directory
+  directory = "notebook_app_backend/functions"  # Points to the correct functions directory
 
-[[redirects]]
-    from = "/*"
-    to = "/.netlify/functions/index"
-    status = 200
+
