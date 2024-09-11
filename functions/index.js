@@ -14,7 +14,7 @@ import serverless from 'serverless-http';
 })();//connecting to mongodb
 
 const app = express();//creating instance of express
-const port = "5000";
+// const port = "5000";
 app.use(cors());
 app.use(express.json());//express.json() is a built in middleware function in Express for working with request body
 app.use('/api/auth', auth);//app.use is used to define a middleware function and here I am redirecting the request to a seperate file
@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
 });
 // app.listen(port, () => {
 //     console.log(`http://localhost:${port}`);
-
 // })
 // Export the serverless function handler
 export default serverless(app);//This is for netlify serverless function
