@@ -1,6 +1,7 @@
 
 //we are creating basic authentication schema here 
-import mongoose, { Schema } from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 
 const NotesSchema = new Schema({
@@ -32,5 +33,4 @@ const NotesSchema = new Schema({
     }
 });
 
-
-export default mongoose.model('Notes', NotesSchema);
+module.exports = mongoose.model('Notes', NotesSchema);

@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 dotenv.config({ path: "C:\\Users\\Admin\\OneDrive\\Desktop\\web development\\MERN APP\\notebook_app_backend\\.env.local" });
 // const jwt_key = process.env.JWT_SECRET_KEY;
@@ -13,5 +13,5 @@ const connectToMongo = async () => {
 
     }
 };
-export default connectToMongo;
+module.exports = connectToMongo;
 //Exporting the function using module.exports

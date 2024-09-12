@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 dotenv.config({ path: "C:\\Users\\Admin\\OneDrive\\Desktop\\web development\\MERN APP\\notebook_app_backend\\.env.local" });
 const jwt_key = process.env.JWT_SECRET_KEY;
@@ -21,4 +21,4 @@ const fetchuser = (req, res, next) => {
         return res.status(401).json({ error: "Please authenticate using a  valid token" });
     }
 }
-export default fetchuser;
+module.exports = fetchuser;

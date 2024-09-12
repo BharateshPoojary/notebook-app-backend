@@ -1,10 +1,11 @@
-import express from 'express';
-import User from '../models/User.js';
-import { body, validationResult } from 'express-validator';
-import bcrypt from 'bcryptjs';
-import fetchuser from '../middleware/fetchuser.js';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+const express = require('express');
+const User = require('../models/User.js'); // Adjust the path if needed
+const { body, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const fetchuser = require('../middleware/fetchuser.js'); // Adjust the path if needed
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
 
 dotenv.config({ path: "C:\\Users\\Admin\\OneDrive\\Desktop\\web development\\MERN APP\\notebook_app_backend\\.env.local" });
 const jwt_key = process.env.JWT_SECRET_KEY;
@@ -94,5 +95,5 @@ router.post('/getuser', fetchuser, async (req, res) => {
         res.status(500).json({ error: "Internal server error occured" });
     }
 })
-export default router;
+module.exports = router;
 //here I have used the middleware function the reason is that if I not used that everytime If I create different endpoint in future and if I need the user creds  I had to repeat the process of verifying the JWT token and accessing the userid so in order to overcome that I have created a seperate file called fetchuser.js// which includes a middleware function which will be invoked for getuser endpoint and this middleware function I can use for different endpoint as well in future to verify JWT Token and accessing id from it to get user credentials

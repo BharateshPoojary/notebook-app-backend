@@ -1,7 +1,8 @@
 
 //we are creating basic authentication schema here 
-import { Schema } from "mongoose";
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 
 const UserSchema = new Schema({//It is an instance of a class i.e. a constructor function 
     //field name is [name , email etc] here
@@ -25,4 +26,4 @@ const UserSchema = new Schema({//It is an instance of a class i.e. a constructor
 });
 
 // export default mongoose.model('User', UserSchema);//It is a function it will return an object which refers to this model using which we can create documents.
-export default mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
