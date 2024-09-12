@@ -43,5 +43,8 @@ const app = express();
 app.get('/', (req, res) => {
     res.json({ message: 'Hello, bharat' });
 });
+app.get('/page', (req, res) => {
+    res.json({ message: 'Hi I am page' });
+})
 
 module.exports.handler = serverless(app);
