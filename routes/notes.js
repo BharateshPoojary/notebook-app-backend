@@ -35,7 +35,7 @@ router.post('/addnotes', fetchuser, [body('title', 'title must be atleast 3 char
     } catch (error) {
         //If some different error arise it will be handled here
         console.log(error.message);
-        res.status(500).json({ error: "Internal server error occured" });
+        res.status(500).json({ error: "Internal server error occured", message: error.message });
     }
 }
 )
